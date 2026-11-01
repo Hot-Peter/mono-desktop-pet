@@ -58,7 +58,7 @@
 
 | | 状态 |
 | --- | --- |
-| macOS | 已发布 —— [v2.2](https://github.com/Hot-Peter/mono-desktop-pet/releases/latest) |
+| macOS | 已发布 —— [v2.3](https://github.com/Hot-Peter/mono-desktop-pet/releases/latest) |
 | Windows | 开发中，暂无可下载版本 |
 | 更多动作与互动 | 计划中 |
 
