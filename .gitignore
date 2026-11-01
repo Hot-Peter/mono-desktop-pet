@@ -1,0 +1,5 @@
+.DS_Store
+*.zip
+MONO.app/
+*.swiftpm
+.build/
