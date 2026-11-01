@@ -54,6 +54,14 @@
 - **单实例**：重复打开不会出现第二只小人
 - **通用二进制**：Apple 芯片 / Intel 均可，macOS 12 或更高
 
+## 开发进度
+
+| | 状态 |
+| --- | --- |
+| macOS | 已发布 —— [v2.2](https://github.com/Hot-Peter/mono-desktop-pet/releases/latest) |
+| Windows | 开发中，暂无可下载版本 |
+| 更多动作与互动 | 计划中 |
+
 ## 构建与运行
 
 只需要 Xcode 命令行工具（没有的话先执行 `xcode-select --install`）：
