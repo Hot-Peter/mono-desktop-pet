@@ -91,7 +91,7 @@ open MONO.app     # 运行
 
 > **想得到和作者完全相同的二进制？**
 > Swift 工具链本身不保证逐字节可复现（同样的源码每次编译产物哈希都不同），
-> 所以下载 [Releases](https://github.com/Hot-Peter/mono-desktop-pet/releases) 里的 `MONO-mac.zip` 才是与作者本机逐字节一致的版本；
+> 所以下载 [Releases](https://github.com/Hot-Peter/mono-desktop-pet/releases) 里最新的 zip 才是与作者本机逐字节一致的版本，
 > 从源码自行构建行为完全相同，仅二进制哈希不同。
 
 ## 安装到「应用程序」
