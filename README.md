@@ -66,8 +66,6 @@ no data collection.
 | Windows | In development — no download yet |
 | More animations & interactions | Planned |
 
-No dates here on purpose: I'd rather ship late than promise early. Want something specific? Open an issue — requests do shape the order.
-
 ## Build & run
 
 You only need the Xcode command line tools (`xcode-select --install` if you don't have them):
