@@ -62,7 +62,7 @@ no data collection.
 
 | | Status |
 | --- | --- |
-| macOS | Released — [v2.2](https://github.com/Hot-Peter/mono-desktop-pet/releases/latest) |
+| macOS | Released — [v2.3](https://github.com/Hot-Peter/mono-desktop-pet/releases/latest) |
 | Windows | In development — no download yet |
 | More animations & interactions | Planned |
 
