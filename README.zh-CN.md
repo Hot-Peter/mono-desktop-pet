@@ -110,6 +110,10 @@ echo "lang en" | nc -U /tmp/stickman.sock           # 切换界面语言（syste
 echo "menu" | nc -U /tmp/stickman.sock              # 导出当前语言的菜单标题
 ```
 
+如果这个路径被**另一个 macOS 用户**的残留 socket 占着（程序无权删除，`/tmp` 有 sticky bit），
+它会自动退到 `/tmp/stickman-<uid>.sock` 继续运行，不会因此启动失败。
+用 `ls /tmp/stickman*.sock` 可以看到实际用的是哪一个。
+
 ## 目录结构
 
 ```

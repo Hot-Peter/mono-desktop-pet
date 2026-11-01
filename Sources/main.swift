@@ -171,6 +171,31 @@ final class PetView: NSView {
 
     override func acceptsFirstMouse(for _: NSEvent?) -> Bool { true }
 
+    private var signalSources: [DispatchSourceSignal] = []
+
+    /// 退出时清掉自己的 socket 文件。
+    /// 不做这件事的后果很具体：程序被杀（pkill / 注销 / 崩溃）后 /tmp/stickman.sock 会留下，
+    /// 而这个文件的属主是"当前用户"。同一台 Mac 换另一个用户登录后，那个人既连不上它
+    /// （0600），也用 unlink 删不掉（/tmp 的 sticky bit），新实例就会误判成"已有实例"。
+    private func installTerminationCleanup() {
+        for sig in [SIGTERM, SIGINT] {
+            signal(sig, SIG_IGN)
+            let src = DispatchSource.makeSignalSource(signal: sig, queue: .main)
+            src.setEventHandler { [weak self] in
+                self?.control?.stop()
+                exit(0)
+            }
+            src.resume()
+            signalSources.append(src)
+        }
+    }
+
+    /// 正常退出路径（⌘Q / Dock 右键退出）也走这里
+    func shutdown() {
+        control?.stop()
+        control = nil
+    }
+
     func start(at o: CGPoint) {
         origin = o
         nextBehaviorAt = Double.random(in: 8...18)
@@ -183,13 +208,22 @@ final class PetView: NSView {
         installResumeWatchers()
 
         // 本地控制总线：任何脚本（或 AI）可以通过它让它说话、做动作。
-        // 单实例守卫②：socket 被活实例占着 → 退出自己（守卫①的兜底，防 LaunchServices 竞态）
-        let ctl = ControlServer(path: "/tmp/stickman.sock")
-        let started = ctl.start { [weak self] tokens in
+        // 单实例守卫②（守卫①的兜底，防 LaunchServices 竞态）：
+        //   只有"探测到同用户的活实例"才退出自己。路径不可用——典型是 /tmp 里躺着
+        //   另一个 macOS 用户留下的 socket，0600 连不上、sticky bit 又删不掉——
+        //   属于附加能力缺失，桌宠本身完全能跑，绝不能因此让进程静默退出。
+        let ctl = ControlServer(paths: ControlServer.defaultPaths)
+        switch ctl.start(handler: { [weak self] tokens in
             self?.handleControl(tokens) ?? ["ok": "0", "err": "gone"]
+        }) {
+        case .ok:
+            control = ctl
+        case .anotherInstance:
+            exit(0)
+        case .unavailable:
+            NSLog("control: debug interface disabled; pet continues without it")
         }
-        guard started else { exit(0) }
-        control = ctl
+        installTerminationCleanup()
         // 调试：直接进入某个姿态，便于截图核对
         if CommandLine.arguments.contains("--top") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
@@ -1987,6 +2021,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         return true   // 消除 macOS 启动日志里的 Secure coding 警告
+    }
+    func applicationWillTerminate(_ notification: Notification) {
+        pet?.shutdown()   // ⌘Q / Dock 退出：顺手删掉控制总线的 socket 文件
     }
 }
 

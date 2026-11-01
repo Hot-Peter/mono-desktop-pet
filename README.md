@@ -116,6 +116,10 @@ echo "lang en" | nc -U /tmp/stickman.sock           # switch UI language (system
 echo "menu"   | nc -U /tmp/stickman.sock            # dump menu titles in the current language
 ```
 
+If that path is already occupied by another macOS user's leftover socket (which this app
+cannot delete — `/tmp` is sticky), it automatically falls back to `/tmp/stickman-<uid>.sock`
+and keeps running. Check which one it is with `ls /tmp/stickman*.sock`.
+
 ## Project layout
 
 ```
