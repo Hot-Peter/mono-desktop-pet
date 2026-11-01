@@ -96,7 +96,7 @@ Only the first launch is blocked; after that it opens with a normal double-click
 
 > **Want the exact binary the author runs?**
 > Swift toolchains don't guarantee byte-for-byte reproducible builds (the same sources produce
-> different hashes each time), so the `MONO-mac.zip` from
+> different hashes each time), so the latest zip from
 > [Releases](https://github.com/Hot-Peter/mono-desktop-pet/releases) is byte-identical to the author's build. Building from source
 > behaves exactly the same — only the binary hash differs.
 
